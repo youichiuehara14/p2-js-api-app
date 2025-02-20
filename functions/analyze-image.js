@@ -60,7 +60,11 @@ exports.handler = async function (event, context) {
     console.error('Error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Error analyzing the image.', details: error.message }),
+      body: JSON.stringify({
+        error: 'Error analyzing the image.',
+        details: error.message,
+        stack: error.stack,
+      }),
     };
   }
 };
