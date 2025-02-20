@@ -21,7 +21,7 @@ exports.handler = async function (event, context) {
         {
           parts: [
             {
-              text: `Identify the location of this image based on visual features. The user suggests: '${userLocation}'. If uncertain, give the closest possible match in a short, direct answer (e.g., 'Paris, France' or 'Unknown: insufficient details').`,
+              text: `Identify the location of this image based on visual features. The user suggests: '${userLocation}'. If uncertain, give the closest possible match in a short answer (e.g., 'Paris, France' or 'Unknown: insufficient details'). If the image is AI-generated, a drawing, a screenshot, or inappropriate for location scanning, state the issue clearly and briefly (e.g., 'Not a real-world photo').`,
             },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
