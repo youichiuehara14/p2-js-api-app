@@ -17,25 +17,29 @@ exports.handler = async function (event, context) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    const model = genAI.getChatModel({
-      model: 'models/gemini-2.0-beta',
+    const model = genAI.getModel({
+      model: 'models/gemini-2.0-flash',
     });
+
+    const generationConfig = {
+      temperature: 1,
+      maxOutputTokens: 2048,
+      responseMimeType: 'text/plain',
+    };
 
     const inputText = `What is the location of this image? The user suggests: '${userLocation}'.`;
 
     const result = await model.generateMessage({
       prompt: {
-        messages: [
-          { content: inputText },
+        text: inputText,
+        images: [
           {
-            content: '',
-            data: {
-              mimeType: 'image/jpeg',
-              bytes: base64Image,
-            },
+            mimeType: 'image/jpeg',
+            data: base64Image,
           },
         ],
       },
+      generationConfig,
     });
 
     const locationText = result?.candidates?.[0]?.content || 'Location not found.';
