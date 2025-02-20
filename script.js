@@ -1,4 +1,4 @@
-function resizeAndConvertToBase64(file, maxWidth = 1000, quality = 0.9) {
+function resizeAndConvertToBase64(file, maxWidth = 1600, quality = 1.0) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Resized Base64 Length:', resizedBase64.length);
 
       preview.src = 'data:image/jpeg;base64,' + resizedBase64;
-      preview.hidden = false;
 
       sendToAI(resizedBase64, locationInput.value);
     } catch (error) {
