@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/youichiuehara14/p2-js-api-app#readme",
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "node-fetch": "^3.3.2"
   }
 }

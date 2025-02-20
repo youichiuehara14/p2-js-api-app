@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       preview.src = e.target.result;
       preview.hidden = false;
       loadingPreview.hidden = true;
-      imgContainer.style.border = 'none';
+      imgContainer.style.border = 'none'; // Hide the border when image is uploaded
     };
     reader.readAsDataURL(file);
   }
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(() => {
         updateOutput('Error analyzing the image. Try again.');
         loadingPreview.hidden = true;
-        preview.hidden = false; // Ensure the preview image is shown on error
+        preview.hidden = false;
       });
   }
 
