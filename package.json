@@ -1,0 +1,23 @@
+{
+  "name": "p2-js-api-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youichiuehara14/p2-js-api-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/youichiuehara14/p2-js-api-app/issues"
+  },
+  "homepage": "https://github.com/youichiuehara14/p2-js-api-app#readme",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}
