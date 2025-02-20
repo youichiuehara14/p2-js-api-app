@@ -21,7 +21,7 @@ exports.handler = async function (event, context) {
         {
           parts: [
             {
-              text: `Identify the real-world location of this image based on visual features. The user suggests: '${userLocation}'. If unclear, provide the closest match in a short format (e.g., 'Paris, France' or 'Unknown: insufficient details'). If the image is AI-generated, a drawing, a screenshot, or contains only text-based addresses (e.g., website footers), state: 'Not a real-world photo'.`,
+              text: `"Where is this image taken? The user suggests: '${userLocation}'. If you can identify a known landmark or street, mention it and explain why. If the image isn't a real-world photo (e.g., AI-generated, a drawing, a screenshot, or just contains text), say so clearly. Keep your answer short and direct.`,
             },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
