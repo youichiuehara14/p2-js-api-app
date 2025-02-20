@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wherify | Find Places Through Pictures</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="app-wrapper">
+    <header>
+      <nav>
+        <ul class="app-nav-list">
+          <li><a href="index.html"><img src="images/left-arrow.svg" alt="Go Back Icon"> Go Back</a></li>
+          <li><img src="images/Wherify-logo.png" alt="Wherify Logo" class="app-logo"></li>
+        </ul>
+      </nav>
+      <main>
+        <div class="app-content">
+          <div id="app-preview-wrapper">
+            <img src="" alt="Uploaded Image" class="app-preview app-image" id="preview" hidden>
+            <img src="images/loading.gif" alt="Loading" class="app-preview-loading" id="app-preview-loading" hidden>
+          </div>
+          <p id="file-name-display"></p>
+          <p class="app-text" id="output">Enter your image possible location</p>
+          <input type="text" id="app-user-location" placeholder='(e.g."Paris")' class="app-user-input">
+        </div>
+        <div class="app-btn-group">
+          <label for="app-upload-img" class="app-btn app-upload-btn">UPLOAD IMG</label>
+          <input type="file" id="app-upload-img" accept="image/*" hidden>
+          <button id="app-find-location" class="app-btn app-find-btn">FIND LOCATION</button>
+        </div>
+      </main>
+    </header>
+  </div>
+  </main>
+  </header>
+  </div>
+</body>
+
+</html>

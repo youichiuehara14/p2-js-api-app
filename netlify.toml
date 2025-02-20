@@ -1,0 +1,11 @@
+[build]
+  command = "npm install"
+  publish = "."
+
+[functions]
+  directory = "functions"
+
+[[redirects]]
+  from = "/analyze-image"
+  to = "/.netlify/functions/analyze-image"
+  status = 200
