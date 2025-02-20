@@ -1,5 +1,4 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const fetch = require('node-fetch');
 
 exports.handler = async function (event, context) {
   console.log('Handler invoked');
@@ -18,39 +17,28 @@ exports.handler = async function (event, context) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    // Get the Gemini model
-    const model = genAI.getGenerativeModel({
+    const model = genAI.getChatModel({
       model: 'models/gemini-2.0-beta',
     });
 
-    const generationConfig = {
-      temperature: 1,
-      maxOutputTokens: 2048,
-      responseMimeType: 'text/plain',
-    };
+    const inputText = `What is the location of this image? The user suggests: '${userLocation}'.`;
 
-    const inputText = `Where was this image taken? The user suggests: '${userLocation}'. Identify landmarks or streets. If unclear, explain why. If not real-world, say: 'Invalid image, use a real-world photo.' Keep responses under 25 words.`;
-
-    const chatSession = model.startChat({
-      generationConfig,
-      history: [],
-    });
-
-    const result = await chatSession.sendMessage({
-      content: {
-        parts: [
-          { text: inputText },
+    const result = await model.generateMessage({
+      prompt: {
+        messages: [
+          { content: inputText },
           {
-            inlineData: {
+            content: '',
+            data: {
               mimeType: 'image/jpeg',
-              data: base64Image,
+              bytes: base64Image,
             },
           },
         ],
       },
     });
 
-    const locationText = result?.response || 'Location not found.';
+    const locationText = result?.candidates?.[0]?.content || 'Location not found.';
     console.log('Extracted Location Text:', locationText);
 
     return {
