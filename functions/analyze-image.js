@@ -3,14 +3,18 @@ const fetch = require('node-fetch');
 exports.handler = async function (event, context) {
   console.log('Handler invoked');
   try {
-    console.log('Event:', event);
-    console.log('Context:', context);
-
     const { base64Image, userLocation } = JSON.parse(event.body);
     console.log('Parsed input:', { base64Image, userLocation });
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    console.log('API Key:', apiKey ? 'Exists' : 'Not Found');
+    const apiKey = process.env.GEMINI_API_KEY; // Environment variable set in Netlify
+    if (!apiKey) {
+      console.error('API key is missing');
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'API key is missing' }),
+      };
+    }
+
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
     const requestData = {
       contents: [
@@ -31,13 +35,23 @@ exports.handler = async function (event, context) {
       body: JSON.stringify(requestData),
     });
 
+    if (!response.ok) {
+      console.error('API request failed:', response.statusText);
+      return {
+        statusCode: response.status,
+        body: JSON.stringify({ error: response.statusText }),
+      };
+    }
+
     const data = await response.json();
-    console.log('Response Status:', response.status);
-    console.log('Response Data:', data);
+    console.log('Full Response Data:', data);
+
+    const locationText = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Location not found.';
+    console.log('Extracted Location Text:', locationText);
 
     return {
       statusCode: 200,
-      body: JSON.stringify(data),
+      body: JSON.stringify({ location: locationText }),
     };
   } catch (error) {
     console.error('Error:', error);
