@@ -31,31 +31,52 @@ exports.handler = async function (event, context) {
 
     console.log('Request Data:', requestData);
 
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestData),
-    });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+      controller.abort();
+    }, 20000); // Timeout after 20 seconds
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('API request failed:', response.statusText, errorText);
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestData),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API request failed:', response.statusText, errorText);
+        return {
+          statusCode: response.status,
+          body: JSON.stringify({ error: response.statusText, details: errorText }),
+        };
+      }
+
+      const data = await response.json();
+      console.log('Full Response Data:', data);
+
+      const locationText =
+        data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Location not found.';
+      console.log('Extracted Location Text:', locationText);
+
       return {
-        statusCode: response.status,
-        body: JSON.stringify({ error: response.statusText, details: errorText }),
+        statusCode: 200,
+        body: JSON.stringify({ location: locationText }),
       };
+    } catch (fetchError) {
+      if (fetchError.name === 'AbortError') {
+        console.error('Fetch request timed out');
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ error: 'Fetch request timed out' }),
+        };
+      } else {
+        throw fetchError;
+      }
     }
-
-    const data = await response.json();
-    console.log('Full Response Data:', data);
-
-    const locationText = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Location not found.';
-    console.log('Extracted Location Text:', locationText);
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ location: locationText }),
-    };
   } catch (error) {
     console.error('Error:', error);
     return {
