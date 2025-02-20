@@ -1,10 +1,9 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
 exports.handler = async function (event, context) {
   console.log('Handler invoked');
+
   try {
     const { base64Image, userLocation } = JSON.parse(event.body);
-    console.log('Parsed input:', { userLocation });
+    console.log('Parsed input:', { base64Image, userLocation });
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -15,34 +14,48 @@ exports.handler = async function (event, context) {
       };
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
+    console.log('API Key is present, proceeding with request.');
 
-    const model = genAI.getModel({
-      model: 'models/gemini-2.0-flash',
-    });
+    const fetch = await import('node-fetch').then((mod) => mod.default);
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-    const generationConfig = {
-      temperature: 1,
-      maxOutputTokens: 2048,
-      responseMimeType: 'text/plain',
+    const requestData = {
+      contents: [
+        {
+          parts: [
+            {
+              text: `Where was this image taken? The user suggests: '${userLocation}'. Identify landmarks or streets. If unclear, explain why. If not real-world, say: 'Invalid image, use a real-world photo.' Keep responses under 25 words.`,
+            },
+            { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
+          ],
+        },
+      ],
     };
 
-    const inputText = `What is the location of this image? The user suggests: '${userLocation}'.`;
+    console.log('Request Data:', JSON.stringify(requestData, null, 2));
 
-    const result = await model.generateMessage({
-      prompt: {
-        text: inputText,
-        images: [
-          {
-            mimeType: 'image/jpeg',
-            data: base64Image,
-          },
-        ],
-      },
-      generationConfig,
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestData),
     });
 
-    const locationText = result?.candidates?.[0]?.content || 'Location not found.';
+    console.log('Response status:', response.status);
+
+    if (!response.ok) {
+      console.error('API request failed:', response.statusText);
+      const errorText = await response.text();
+      console.error('Error details:', errorText);
+      return {
+        statusCode: response.status,
+        body: JSON.stringify({ error: response.statusText, details: errorText }),
+      };
+    }
+
+    const data = await response.json();
+    console.log('Full Response Data:', JSON.stringify(data, null, 2));
+
+    const locationText = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Location not found.';
     console.log('Extracted Location Text:', locationText);
 
     return {
@@ -53,10 +66,7 @@ exports.handler = async function (event, context) {
     console.error('Error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        error: 'Error analyzing the image.',
-        details: error.message,
-      }),
+      body: JSON.stringify({ error: 'Error analyzing the image.', details: error.message }),
     };
   }
 };

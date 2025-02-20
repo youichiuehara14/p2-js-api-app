@@ -51,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     reader.readAsDataURL(file);
   }
-
   function sendToAI(base64Image, userLocation) {
     fetch('/analyze-image', {
       method: 'POST',
@@ -64,13 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
         updateOutput(`📍 Location: ${resultText}`);
         loadingPreview.hidden = true;
         preview.hidden = false;
-
         locationInput.hidden = true;
       })
       .catch(() => {
         updateOutput('Error analyzing the image. Try again.');
         loadingPreview.hidden = true;
-        preview.hidden = false;
+        preview.hidden = false; // Ensure the preview image is shown on error
       });
   }
 
