@@ -20,7 +20,9 @@ exports.handler = async function (event, context) {
       contents: [
         {
           parts: [
-            { text: `What is the location of this image? The user suggests: ${userLocation}.` },
+            {
+              text: `What is the location of this image? The user suggests: ${userLocation}. if image location cannot be determined. explain that it's invalid`,
+            },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
         },
