@@ -1,3 +1,33 @@
+function resizeAndConvertToBase64(file, maxWidth = 800, quality = 0.7) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = function (event) {
+      const img = new Image();
+      img.src = event.target.result;
+
+      img.onload = function () {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const scale = maxWidth / img.width;
+        canvas.width = maxWidth;
+        canvas.height = img.height * scale;
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressedBase64.split(',')[1]); // Remove "data:image/jpeg;base64," part
+      };
+
+      img.onerror = reject;
+    };
+
+    reader.onerror = reject;
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('app-upload-img');
   const preview = document.getElementById('preview');
@@ -32,25 +62,29 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.readAsDataURL(file);
   }
 
-  function analyzeImage() {
+  async function analyzeImage() {
     if (!fileInput.files.length) {
       return updateOutput('Please select an image.');
     }
 
-    updateOutput('Analyzing image location');
-    const file = fileInput.files[0];
-    const reader = new FileReader();
+    updateOutput('Analyzing image location...');
     loadingPreview.hidden = false;
     preview.hidden = true;
     imgContainer.style.border = 'none';
 
-    reader.onload = () => {
-      const base64Image = reader.result.split(',')[1];
-      sendToAI(base64Image, locationInput.value);
-    };
+    const file = fileInput.files[0];
 
-    reader.readAsDataURL(file);
+    try {
+      const resizedBase64 = await resizeAndConvertToBase64(file);
+      console.log('Resized Base64 Length:', resizedBase64.length);
+
+      sendToAI(resizedBase64, locationInput.value);
+    } catch (error) {
+      console.error('Error processing image:', error);
+      updateOutput('Error processing image.');
+    }
   }
+
   function sendToAI(base64Image, userLocation) {
     fetch('/analyze-image', {
       method: 'POST',
