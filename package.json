@@ -4,21 +4,18 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "netlify dev",
+    "build": "echo 'No build step required'"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/youichiuehara14/p2-js-api-app.git"
+    "url": "git+https://github.com/yourusername/yourrepository.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/youichiuehara14/p2-js-api-app/issues"
-  },
-  "homepage": "https://github.com/youichiuehara14/p2-js-api-app#readme",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^2.6.11"
   }
 }
