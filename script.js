@@ -22,12 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    const maxSize = 10 * 1024 * 1024;
-    if (file.size > maxSize) {
-      updateOutput('File size exceeds 10 MB. Please upload a smaller file.');
-      return;
-    }
-
     const reader = new FileReader();
     reader.onload = (e) => {
       preview.src = e.target.result;
@@ -75,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(() => {
         updateOutput('Error analyzing the image. Try again.');
         loadingPreview.hidden = true;
-        preview.hidden = false;
+        preview.hidden = false; // Ensure the preview image is shown on error
       });
   }
 
