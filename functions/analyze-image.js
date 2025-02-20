@@ -1,12 +1,10 @@
-const fetch = require('node-fetch');
-
 exports.handler = async function (event, context) {
   console.log('Handler invoked');
   try {
     const { base64Image, userLocation } = JSON.parse(event.body);
     console.log('Parsed input:', { base64Image, userLocation });
 
-    const apiKey = process.env.GEMINI_API_KEY; // Environment variable set in Netlify
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       console.error('API key is missing');
       return {
@@ -14,6 +12,8 @@ exports.handler = async function (event, context) {
         body: JSON.stringify({ error: 'API key is missing' }),
       };
     }
+
+    const fetch = await import('node-fetch').then((mod) => mod.default);
 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
     const requestData = {
