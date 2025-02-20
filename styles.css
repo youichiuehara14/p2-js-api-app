@@ -265,5 +265,6 @@ body {
   .app-btn {
     width: 250px;
     border-radius: 8px;
+    color: black;
   }
 }
