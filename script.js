@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const file = event.target.files[0];
     if (!file) return;
 
+    const maxSize = 10 * 1024 * 1024;
+    if (file.size > maxSize) {
+      updateOutput('File size exceeds 10 MB. Please upload a smaller file.');
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = (e) => {
       preview.src = e.target.result;
@@ -45,20 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
     imgContainer.style.border = 'none';
 
     reader.onload = () => {
-      const compress = new Compress();
-      compress
-        .compress([file], {
-          size: 5,
-          quality: 0.75,
-          maxWidth: 1920,
-          maxHeight: 1080,
-          resize: true,
-        })
-        .then((compressedFiles) => {
-          const compressedFile = compressedFiles[0];
-          const base64Image = compressedFile.data.split(',')[1];
-          sendToAI(base64Image, locationInput.value);
-        });
+      const base64Image = reader.result.split(',')[1];
+      sendToAI(base64Image, locationInput.value);
     };
 
     reader.readAsDataURL(file);
