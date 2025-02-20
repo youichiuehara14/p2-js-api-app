@@ -21,7 +21,7 @@ exports.handler = async function (event, context) {
         {
           parts: [
             {
-              text: `What is the location of this image? The user suggests: ${userLocation}. if image location cannot be determined. explain that it's invalid`,
+              text: `Analyze the location of this image based on its visual features. The user suggests: '${userLocation}'. If the location cannot be determined, provide a clear explanation of why it is invalid or difficult to identify.`,
             },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
