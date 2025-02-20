@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
     document.getElementById('file-name-display').textContent = fileName;
 
-    // Reset state on new upload
     resetState();
   });
 
@@ -23,33 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    const maxSize = 15 * 1024 * 1024; // 15 MB
-    if (file.size > maxSize) {
-      updateOutput('File size exceeds 15 MB. Please upload a smaller file.');
-      return;
-    }
-
-    const compress = new Compress();
-    compress
-      .compress([file], {
-        size: 5,
-        quality: 0.75,
-        maxWidth: 1920,
-        maxHeight: 1080,
-        resize: true,
-      })
-      .then((compressedFiles) => {
-        const compressedFile = compressedFiles[0];
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          preview.src = e.target.result;
-          preview.hidden = false;
-          loadingPreview.hidden = true;
-          imgContainer.style.border = 'none';
-          sendToAI(compressedFile.data, locationInput.value);
-        };
-        reader.readAsDataURL(compressedFile);
-      });
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      preview.src = e.target.result;
+      preview.hidden = false;
+      loadingPreview.hidden = true;
+      imgContainer.style.border = 'none';
+    };
+    reader.readAsDataURL(file);
   }
 
   function analyzeImage() {
@@ -59,7 +39,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateOutput('Analyzing image location');
     const file = fileInput.files[0];
-    handleImageUpload({ target: { files: [file] } });
+    const reader = new FileReader();
+    loadingPreview.hidden = false;
+    preview.hidden = true;
+    imgContainer.style.border = 'none';
+
+    reader.onload = () => {
+      const compress = new Compress();
+      compress
+        .compress([file], {
+          size: 5,
+          quality: 0.75,
+          maxWidth: 1920,
+          maxHeight: 1080,
+          resize: true,
+        })
+        .then((compressedFiles) => {
+          const compressedFile = compressedFiles[0];
+          const base64Image = compressedFile.data.split(',')[1];
+          sendToAI(base64Image, locationInput.value);
+        });
+    };
+
+    reader.readAsDataURL(file);
   }
 
   function sendToAI(base64Image, userLocation) {
