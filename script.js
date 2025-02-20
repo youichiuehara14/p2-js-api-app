@@ -1,4 +1,4 @@
-function resizeAndConvertToBase64(file, maxWidth = 800, quality = 0.7) {
+function resizeAndConvertToBase64(file, maxWidth = 1000, quality = 0.9) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -18,7 +18,7 @@ function resizeAndConvertToBase64(file, maxWidth = 800, quality = 0.7) {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
         const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-        resolve(compressedBase64.split(',')[1]); // Remove "data:image/jpeg;base64," part
+        resolve(compressedBase64.split(',')[1]);
       };
 
       img.onerror = reject;
@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('app-upload-img').addEventListener('change', function () {
     const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
     document.getElementById('file-name-display').textContent = fileName;
-
     resetState();
   });
 
@@ -78,6 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const resizedBase64 = await resizeAndConvertToBase64(file);
       console.log('Resized Base64 Length:', resizedBase64.length);
 
+      preview.src = 'data:image/jpeg;base64,' + resizedBase64;
+      preview.hidden = false;
+
       sendToAI(resizedBase64, locationInput.value);
     } catch (error) {
       console.error('Error processing image:', error);
@@ -93,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log('AI Full Response:', JSON.stringify(data, null, 2));
         const resultText = data.location || 'Location not found.';
         updateOutput(`📍 Location: ${resultText}`);
         loadingPreview.hidden = true;
@@ -102,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(() => {
         updateOutput('Error analyzing the image. Try again.');
         loadingPreview.hidden = true;
-        preview.hidden = false; // Ensure the preview image is shown on error
+        preview.hidden = false;
       });
   }
 
