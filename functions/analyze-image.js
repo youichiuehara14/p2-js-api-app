@@ -24,15 +24,13 @@ module.exports.handler = async function (event, context) {
         {
           parts: [
             {
-              text: `Analyze the image to determine its location using landmarks, buildings, or geography.  
-              The user suggests: '${userLocation}'.  
-              - If the image is AI-generated, fictional, or a digital screen (e.g., screenshot of a website, text message), respond with 'Invalid image' and briefly explain why.  
-              - If it's a real location, provide the most likely **city and country** as a minimum. Additionally, include specific details such as a district, neighborhood, street, or landmark.  
-              - Indicate confidence level:  
-                - If highly confident, state 'Likely location: [City, Country] - [specific place]'  
-                - If uncertain, state 'Possible location: [City, Country] - [general area]' and briefly explain the uncertainty.  
-              - If unclear, state 'Unable to determine location' with a brief reason.   
-                Keep responses concise (under 30 words).`,
+              text: `Analyze the image and determine the location using landmarks, buildings, or geography. The user suggests: '${userLocation}'. 
+                      If the image is AI-generated, fictional, or a digital screen (e.g., screenshot of a website, text message), respond with 'Invalid image' and briefly explain why. 
+                      If it's a real location, provide the most likely city and country as a minimum, along with specific details like a district, street, or landmark. 
+                      Indicate confidence level:  
+                      - If highly confident, say 'Likely location: [City, Country] - [specific place] (Confidence: High)'.  
+                      - If unsure, say 'Possible location: [City, Country] - [general area] (Confidence: Low)' and briefly explain the uncertainty.  
+                      If unclear, state 'Unable to determine location' with a short reason. Keep responses concise (under 35 words max).`,
             },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
