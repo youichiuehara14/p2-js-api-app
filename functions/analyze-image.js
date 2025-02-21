@@ -19,13 +19,12 @@ module.exports.handler = async function (event, context) {
     const fetch = await import('node-fetch').then((mod) => mod.default);
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-    const requestData = {
+    const updatedRequestData = {
       contents: [
         {
           parts: [
             {
-              text: `Analyze the image and determine the location using landmarks, buildings, or geography. The user suggests: '${userLocation}'. If the image is AI-generated, fictional, or a digital screen (e.g., screenshot of a website, text message), respond with 'Invalid image' and briefly explain why. If it's a real location, provide the most specific place first, such as the building name, street, or landmark, then mention the city and country. Display an accuracy percentage (e.g., 'Accuracy: 0% - 100%') only if you are confident about the location. If the location is unclear, state 'Unable to determine location' and briefly explain why. Keep the explanation under 35 words with no minimum limit. Don't use '*' character in the result. 
-        If the user's location suggestion is relevant, include it in the result and say that it helped. If the user's location suggestion is incorrect or irrelevant, clearly state that the suggestion did not help and was wrong. Always prioritize the actual location based on the image and location details, and be honest about your level of certainty regarding the accuracy.`,
+              text: `Analyze the image and determine the location using landmarks, buildings, or geography. The user suggests: '${userLocation}'. If the image is AI-generated, fictional, or a digital screen (e.g., screenshot of a website, text message), respond with 'Invalid image' and briefly explain why. If it's a real location, provide up to 5 possible locations, ranked from most accurate to least accurate. For each location, provide the name of the place (e.g., building, street, landmark), followed by the city and country. Include the accuracy percentage for each location (e.g., 'Accuracy: 0% - 100%'). If the location is unclear, state 'Unable to determine location' and briefly explain why. Keep each explanation under 35 words with no minimum limit. Don't use the '*' character in the result.`,
             },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
