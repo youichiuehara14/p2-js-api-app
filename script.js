@@ -23,14 +23,12 @@ function resizeAndConvertToBase64(file, maxWidth = 2000, maxHeight = 2000) {
         canvas.width = width;
         canvas.height = height;
 
-        // Enable high-quality scaling
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Detect original format and prioritize PNG for best accuracy
         const format = file.type.includes('png') ? 'image/png' : 'image/jpeg';
-        const quality = format === 'image/png' ? 1.0 : 0.95; // PNG ignores quality, JPEG is near max
+        const quality = format === 'image/png' ? 1.0 : 0.95;
 
         const compressedBase64 = canvas.toDataURL(format, quality);
         resolve(compressedBase64.split(',')[1]);
