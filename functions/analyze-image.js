@@ -19,7 +19,7 @@ module.exports.handler = async function (event, context) {
     const fetch = await import('node-fetch').then((mod) => mod.default);
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-    const updatedRequestData = {
+    const requestData = {
       contents: [
         {
           parts: [
