@@ -1,4 +1,4 @@
-function resizeAndConvertToBase64(file, maxWidth = 1600, quality = 1.0) {
+function resizeAndConvertToBase64(file, maxWidth = 2000, maxHeight = 2000) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -11,13 +11,28 @@ function resizeAndConvertToBase64(file, maxWidth = 1600, quality = 1.0) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
 
-        const scale = maxWidth / img.width;
-        canvas.width = maxWidth;
-        canvas.height = img.height * scale;
+        let width = img.width;
+        let height = img.height;
 
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        if (width > maxWidth || height > maxHeight) {
+          const scale = Math.min(maxWidth / width, maxHeight / height);
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
 
-        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+        canvas.width = width;
+        canvas.height = height;
+
+        // Enable high-quality scaling
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Detect original format and prioritize PNG for best accuracy
+        const format = file.type.includes('png') ? 'image/png' : 'image/jpeg';
+        const quality = format === 'image/png' ? 1.0 : 0.95; // PNG ignores quality, JPEG is near max
+
+        const compressedBase64 = canvas.toDataURL(format, quality);
         resolve(compressedBase64.split(',')[1]);
       };
 
