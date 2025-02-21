@@ -24,11 +24,11 @@ module.exports.handler = async function (event, context) {
         {
           parts: [
             {
-              text: `Analyze the image and determine the location using landmarks, buildings, or geography. The user suggests: '${userLocation}'. 
-                    If the image is AI-generated, fictional, or a digital screen (e.g., screenshot of a website, text message), respond with 'Invalid image' and briefly explain why. 
-                    If it's a real location, provide the most likely city and country as a minimum, along with specific details like a district, street, or landmark. 
-                    If highly confident, say 'Likely location: [City, Country] - [specific place]'. Otherwise, just provide the best possible guess without mentioning confidence. 
-                    If unclear, state 'Unable to determine location' with a short reason. Keep responses concise (under 30 words).`,
+              text: `Analyze the image and determine the location using landmarks, buildings, or geography. The user suggests: '${userLocation}'.  
+If the image is AI-generated, fictional, or a digital screen (e.g., screenshot of a website, text message), respond with 'Invalid image' and briefly explain why.  
+If it's a real location, provide the most likely city and country as a minimum, along with specific details like a district, street, or landmark.  
+If the location is unclear, state 'Unable to determine location' and briefly explain why.  
+Keep responses concise (under 30 words)`,
             },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
