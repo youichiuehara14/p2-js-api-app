@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const resizedBase64 = await resizeAndConvertToBase64(file);
-      console.log('Resized Base64 Length:', resizedBase64.length);
 
       preview.src = 'data:image/jpeg;base64,' + resizedBase64;
 
