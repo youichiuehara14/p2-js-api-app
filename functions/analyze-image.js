@@ -25,11 +25,12 @@ module.exports.handler = async function (event, context) {
           parts: [
             {
               text: `Analyze the image and determine the location using landmarks, buildings, or geography. The user suggests: '${userLocation}'. 
-                - If the image appears to be AI-generated, fictional, or a digital screen (e.g., screenshot of a website or text message), respond with 'Invalid image' and explain briefly why. 
-                - If the image is a real location, provide the most specific place first (e.g., building, street, landmark), followed by city and country. Accuracy percentage (e.g., 'Accuracy: 0% - 100%') should be displayed if confident. 
-                - If unsure, provide the most likely location(s) but limit to **two** probable locations at most. 
-                - If the user's location suggestion is relevant, include it and say it helped. If the suggestion is incorrect, mention it was wrong. 
-                - Limit each explanation to 35 words. Don't use '*' character in the result.`,
+                - If the image appears to be AI-generated, fictional, or a digital screen (e.g., screenshot of a website or text message), respond with 'Invalid image' and explain briefly why.
+                - If the image is a real-world location, provide the most specific place possible, such as the building name, street, landmark, or city. Accuracy percentage (e.g., 'Accuracy: 0% - 100%') should be shown if confident.
+                - If unsure, only suggest **one** probable location based on the most reliable clues in the image.
+                - If the user's location suggestion is correct, mention that it helped. If incorrect, explain that the suggestion was wrong.
+                - Always mention when the result is not fully certain, especially if the suggested location is far from the actual one. Avoid making confident claims unless the evidence in the image supports it. 
+                - Keep the explanation under 35 words, and do not use '*' in the result.`,
             },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
