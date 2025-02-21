@@ -24,7 +24,14 @@ module.exports.handler = async function (event, context) {
         {
           parts: [
             {
-              text: `Analyze the image and determine the location using landmarks, buildings, or geography. The user suggests: '${userLocation}'. If the image is AI-generated, fictional, or a digital screen (e.g., screenshot of a website, text message), respond with 'Invalid image' and explain briefly why. If it's a real location, provide the most specific place first, such as the building name, street, or landmark, then mention the city and country. Display an accuracy percentage (e.g., 'Accuracy: 0% - 100%'). If the location is unclear, state 'Unable to determine location' and briefly explain why. Keep the explanation under 35 words with no minimum limit. Don't use '*' character in the result. Only mention the user’s suggested location if it directly helps identify the location. If the suggestion is incorrect or irrelevant, don't include it in the result. Always prioritize the correct geographical location.`,
+              text: `Analyze the image and determine the location using landmarks, buildings, or geography. 
+              The user suggests: '${userLocation}'. If the image is AI-generated, fictional, or a digital screen (e.g., screenshot of a website, text message), 
+              respond with 'Invalid image' and briefly explain why. If it's a real location, provide the most specific place first, such as the building name, street, or landmark, then mention the city and country. 
+              Display an accuracy percentage (e.g., 'Accuracy: 0% - 100%'). If the location is unclear, state 'Unable to determine location' and briefly explain why. Keep the explanation under 35 words with no minimum limit. 
+              Don't use '*' character in the result. 
+              If the user's location suggestion is relevant, include it in the result and say that it helped. 
+              If the user's location suggestion is incorrect or irrelevant, clearly state that the suggestion did not help and was wrong. 
+              Always prioritize the actual location based on the image and location details.`,
             },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
