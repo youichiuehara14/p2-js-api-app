@@ -1,4 +1,4 @@
-exports.handler = async function (event, context) {
+module.exports.handler = async function (event, context) {
   console.log('Handler invoked');
 
   try {

@@ -88,9 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const resizedBase64 = await resizeAndConvertToBase64(file);
-
       preview.src = 'data:image/jpeg;base64,' + resizedBase64;
-
       sendToAI(resizedBase64, locationInput.value);
     } catch (error) {
       console.error('Error processing image:', error);
