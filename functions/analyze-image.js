@@ -25,17 +25,15 @@ module.exports.handler = async function (event, context) {
           parts: [
             {
               text: `Analyze the image independently to determine the location using landmarks, buildings, or geography. Do not consider the user's suggested location unless the analysis is unclear.
-
-- If the image is AI-generated, fictional, or a digital screen (e.g., a screenshot of a website or text message), respond with "Invalid image" and explain why.  
-- If the image depicts a real-world location, provide the most specific place possible (e.g., building name, street, landmark, or city) and include an accuracy percentage (e.g., "Accuracy: 0% - 100%") if the location is confidently identifiable.  
-- After determining the location, compare it with the user's suggested location:  
-  - If the suggestion **matches** or **helps confirm** the result, acknowledge it.  
-  - If the suggestion is **incorrect**, explicitly state that it is wrong and explain why.  
-- If the location is unclear, consider the user's suggestion to refine the analysis.  
-- Always note uncertainty or the need for further clarification. Keep explanations concise (under 35 words) and avoid using "*".
-.
-`,
+    - If the image is AI-generated, fictional, or a digital screen (e.g., a screenshot of a website or text message), respond with "Invalid image" and explain why.  
+    - If the image depicts a real-world location, provide the most specific place possible (e.g., building name, street, landmark, or city) and include an accuracy percentage (e.g., "Accuracy: 0% - 100%") if the location is confidently identifiable.  
+    - After determining the location, compare it with the user's suggested location:  
+      - If the suggestion **matches** or **helps confirm** the result, acknowledge it.  
+      - If the suggestion is **incorrect**, explicitly state that it is wrong and explain why.  
+    - If the location is unclear, consider the user's suggestion to refine the analysis.  
+    - Always note uncertainty or the need for further clarification. Keep explanations concise (under 35 words) and avoid using "*".`,
             },
+            { text: userLocation }, // Add the user's input location
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
         },
