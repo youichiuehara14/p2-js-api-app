@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function sendToAI(base64Image, userLocation) {
-    fetch('/analyze-image', {
+    fetch('/.netlify/functions/analyze-image', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ base64Image, userLocation }),
@@ -66,7 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
         locationInput.hidden = true;
         toggleButtons();
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error('Error analyzing the image:', error);
         updateOutput('Error analyzing the image. Try again.');
         loadingPreview.hidden = true;
         preview.hidden = false;
