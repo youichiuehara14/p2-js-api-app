@@ -128,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function toggleButtons() {
     findLocationBtn.hidden = true;
     document.querySelector('.app-upload-btn').hidden = true;
+    fileInput.hidden = true; // Ensure the file input remains hidden
     resetBtn.hidden = false;
   }
 
