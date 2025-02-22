@@ -1,3 +1,46 @@
+function resizeAndConvertToBase64(file, maxWidth = 2000, maxHeight = 2000) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = function (event) {
+      const img = new Image();
+      img.src = event.target.result;
+
+      img.onload = function () {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          const scale = Math.min(maxWidth / width, maxHeight / height);
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const format = file.type.includes('png') ? 'image/png' : 'image/jpeg';
+        const quality = format === 'image/png' ? 1.0 : 0.95;
+
+        const compressedBase64 = canvas.toDataURL(format, quality);
+        resolve(compressedBase64.split(',')[1]);
+      };
+
+      img.onerror = reject;
+    };
+
+    reader.onerror = reject;
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('app-upload-img');
   const preview = document.getElementById('preview');
