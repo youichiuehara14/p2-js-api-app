@@ -128,7 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function toggleButtons() {
     findLocationBtn.hidden = true;
-    document.querySelector('.app-upload-btn').hidden = true;
     fileInputLabel.hidden = true;
     resetBtn.hidden = false;
   }
@@ -142,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
     imgContainer.style.border = '1px solid black';
     locationInput.hidden = false;
     findLocationBtn.hidden = false;
-    document.querySelector('.app-upload-btn').hidden = false;
-    resetBtn.hidden = true;
+    fileInputLabel.hidden = true;
+    resetBtn.hidden = false;
     fileInput.value = '';
     console.log('State reset.');
   }
