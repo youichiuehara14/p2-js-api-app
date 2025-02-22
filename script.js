@@ -13,12 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   findLocationBtn.addEventListener('click', analyzeImage);
   resetBtn.addEventListener('click', resetState);
 
-  document.getElementById('app-upload-img').addEventListener('change', function () {
-    const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
-    document.getElementById('file-name-display').textContent = fileName;
-    resetState();
-  });
-
   function handleImageUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -31,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
       imgContainer.style.border = 'none';
     };
     reader.readAsDataURL(file);
+    resetState();
   }
 
   async function analyzeImage() {
@@ -84,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function toggleButtons() {
     findLocationBtn.hidden = true;
-    fileInput.hidden = true;
+    document.querySelector('.app-upload-btn').hidden = true;
     resetBtn.hidden = false;
   }
 
@@ -97,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     imgContainer.style.border = '1px solid black';
     locationInput.hidden = false;
     findLocationBtn.hidden = false;
-    fileInput.hidden = false;
+    document.querySelector('.app-upload-btn').hidden = false;
     resetBtn.hidden = true;
   }
 });
