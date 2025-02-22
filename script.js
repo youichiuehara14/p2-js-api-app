@@ -138,5 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
     findLocationBtn.hidden = false;
     document.querySelector('.app-upload-btn').hidden = false;
     resetBtn.hidden = true;
+    fileInput.value = '';
   }
 });
