@@ -1,58 +1,17 @@
-function resizeAndConvertToBase64(file, maxWidth = 2000, maxHeight = 2000) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onload = function (event) {
-      const img = new Image();
-      img.src = event.target.result;
-
-      img.onload = function () {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-
-        let width = img.width;
-        let height = img.height;
-
-        if (width > maxWidth || height > maxHeight) {
-          const scale = Math.min(maxWidth / width, maxHeight / height);
-          width = Math.round(width * scale);
-          height = Math.round(height * scale);
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'high';
-        ctx.drawImage(img, 0, 0, width, height);
-
-        const format = file.type.includes('png') ? 'image/png' : 'image/jpeg';
-        const quality = format === 'image/png' ? 1.0 : 0.95;
-
-        const compressedBase64 = canvas.toDataURL(format, quality);
-        resolve(compressedBase64.split(',')[1]);
-      };
-
-      img.onerror = reject;
-    };
-
-    reader.onerror = reject;
-  });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('app-upload-img');
   const preview = document.getElementById('preview');
   const loadingPreview = document.getElementById('app-preview-loading');
   const findLocationBtn = document.getElementById('app-find-location');
+  const resetBtn = document.getElementById('app-reset');
   const output = document.getElementById('output');
   const locationInput = document.getElementById('app-user-location');
   const imgContainer = document.getElementById('app-preview-wrapper');
 
+  imgContainer.style.border = '1px solid black';
   fileInput.addEventListener('change', handleImageUpload);
   findLocationBtn.addEventListener('click', analyzeImage);
-  imgContainer.style.border = '1px solid black';
+  resetBtn.addEventListener('click', resetState);
 
   document.getElementById('app-upload-img').addEventListener('change', function () {
     const fileName = this.files[0] ? this.files[0].name : 'No file chosen';
@@ -110,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingPreview.hidden = true;
         preview.hidden = false;
         locationInput.hidden = true;
+        toggleButtons();
       })
       .catch(() => {
         updateOutput('Error analyzing the image. Try again.');
@@ -122,6 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
     output.textContent = message;
   }
 
+  function toggleButtons() {
+    findLocationBtn.hidden = true;
+    fileInput.hidden = true;
+    resetBtn.hidden = false;
+  }
+
   function resetState() {
     preview.hidden = true;
     loadingPreview.hidden = true;
@@ -130,5 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
     locationInput.value = '';
     imgContainer.style.border = '1px solid black';
     locationInput.hidden = false;
+    findLocationBtn.hidden = false;
+    fileInput.hidden = false;
+    resetBtn.hidden = true;
   }
 });
