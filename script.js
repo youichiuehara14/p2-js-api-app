@@ -42,7 +42,7 @@ function resizeAndConvertToBase64(file, maxWidth = 2000, maxHeight = 2000) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const fileInput = document.getElementById('app-upload-img');
+  const fileInput = document.getElementById('app-upload-btn');
   const preview = document.getElementById('preview');
   const loadingPreview = document.getElementById('app-preview-loading');
   const findLocationBtn = document.getElementById('app-find-location');

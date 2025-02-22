@@ -178,7 +178,7 @@ body {
   margin-bottom: 40px;
 }
 
-.app-upload-btn {
+#app-upload-btn {
   display: flex;
   align-items: center;
   justify-content: center;
