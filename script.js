@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
       preview.hidden = false;
       loadingPreview.hidden = true;
       imgContainer.style.border = 'none';
+      console.log('Image uploaded and preview set.');
     };
     reader.readAsDataURL(file);
     resetState();
@@ -73,19 +74,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function analyzeImage() {
     if (!fileInput.files.length) {
-      return updateOutput('Please select an image.');
+      updateOutput('Please select an image.');
+      console.log('No image selected.');
+      return;
     }
 
     updateOutput('Analyzing image location...');
     loadingPreview.hidden = false;
     preview.hidden = true;
     imgContainer.style.border = 'none';
+    console.log('Starting image analysis...');
 
     const file = fileInput.files[0];
 
     try {
       const resizedBase64 = await resizeAndConvertToBase64(file);
       preview.src = 'data:image/jpeg;base64,' + resizedBase64;
+      console.log('Image resized and converted to Base64.');
       sendToAI(resizedBase64, locationInput.value);
     } catch (error) {
       console.error('Error processing image:', error);
@@ -139,5 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.app-upload-btn').hidden = false;
     resetBtn.hidden = true;
     fileInput.value = '';
+    console.log('State reset.');
   }
 });
