@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Image uploaded and preview set.');
     };
     reader.readAsDataURL(file);
-    resetState();
   }
 
   async function analyzeImage() {
