@@ -43,7 +43,7 @@ function resizeAndConvertToBase64(file, maxWidth = 2000, maxHeight = 2000) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('app-upload-img');
-  const fileInputLabel = document.querySelector('.app-upload-btn'); // Corrected selector for the label
+  const fileInputLabel = document.getElementById('app-upload-btn');
   const preview = document.getElementById('preview');
   const loadingPreview = document.getElementById('app-preview-loading');
   const findLocationBtn = document.getElementById('app-find-location');
@@ -128,8 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function toggleButtons() {
     findLocationBtn.hidden = true;
-    fileInputLabel.hidden = true;
-    fileInput.hidden = true;
+    fileInputLabel.style.display = 'none';
     resetBtn.hidden = false;
   }
 
@@ -143,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
     locationInput.hidden = false;
     findLocationBtn.hidden = false;
     fileInputLabel.hidden = false;
-    fileInput.hidden = false;
     resetBtn.hidden = true;
     fileInput.value = '';
     console.log('State reset.');
