@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
     imgContainer.style.border = '1px solid black';
     locationInput.hidden = false;
     findLocationBtn.hidden = false;
-    fileInputLabel.hidden = false;
+    fileInputLabel.style.display = 'flex';
     resetBtn.hidden = true;
     fileInput.value = '';
     console.log('State reset.');
