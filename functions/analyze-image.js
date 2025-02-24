@@ -28,13 +28,13 @@ module.exports.handler = async function (event, context) {
                       Do not directly merge the user's suggested location ("${userLocation}") into the final location result.
                       - If the image is AI-generated, fictional, or a digital screen (e.g., a screenshot of a website or text message), respond with "Invalid image" and explain why.
                       - If the image depicts a real-world location, always provide the most specific place possible (e.g., building name, street, landmark, or city) and include an accuracy percentage (e.g., "Accuracy: 0% - 100%") if the location is confidently identifiable.
+                      - Display the determined location first, followed by the explanation.
                       - Compare the determined location with the user's suggested location:
                         - If the suggestion matches the result, confirm it.
                         - If the suggestion is incorrect but helped guide the result, acknowledge it in a separate sentence, but do not include it within the final location details.
                         - If the location is unclear, **use the user's suggestion to refine the analysis and attempt to validate it against the image details before dismissing it.** 
                       - Always note uncertainty or the need for further clarification.
-                      - Keep explanations concise (under 35 words) and avoid using "*".
-                      - Ensure the user's input is strictly related to location, such as a city, street, or country.`,
+                      - Keep explanations concise (under 35 words) and avoid using "*".`,
             },
             { text: userLocation },
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
