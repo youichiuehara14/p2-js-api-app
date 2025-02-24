@@ -57,6 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
   findLocationBtn.addEventListener('click', analyzeImage);
   resetBtn.addEventListener('click', resetState);
 
+  document.querySelectorAll('#preview, #app-preview-loading').forEach((img) => {
+    img.addEventListener('contextmenu', (event) => event.preventDefault());
+  });
+
   function handleImageUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -67,7 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
       preview.hidden = false;
       loadingPreview.hidden = true;
       imgContainer.style.border = 'none';
-      console.log('Image uploaded and preview set.');
+      //for debugging
+      // console.log('Image uploaded and preview set.');
     };
     reader.readAsDataURL(file);
   }
@@ -75,7 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
   async function analyzeImage() {
     if (!fileInput.files.length) {
       updateOutput('Please select an image.');
-      console.log('No image selected.');
+      //for debugging
+      //  console.log('No image selected.');
       return;
     }
 
@@ -83,14 +89,16 @@ document.addEventListener('DOMContentLoaded', () => {
     loadingPreview.hidden = false;
     preview.hidden = true;
     imgContainer.style.border = 'none';
-    console.log('Starting image analysis...');
+    //for debugging
+    // console.log('Starting image analysis...');
 
     const file = fileInput.files[0];
 
     try {
       const resizedBase64 = await resizeAndConvertToBase64(file);
       preview.src = 'data:image/jpeg;base64,' + resizedBase64;
-      console.log('Image resized and converted to Base64.');
+      //for debugging
+      //  console.log('Image resized and converted to Base64.');
       sendToAI(resizedBase64, locationInput.value);
     } catch (error) {
       console.error('Error processing image:', error);
@@ -106,7 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log('AI Full Response:', JSON.stringify(data, null, 2));
+        //for debugging
+        // console.log('AI Full Response:', JSON.stringify(data, null, 2));
         const resultText = data.location || 'Location not found.';
         updateOutput(`📍 Location: ${resultText}`);
         loadingPreview.hidden = true;
@@ -144,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInputLabel.style.display = 'flex';
     resetBtn.hidden = true;
     fileInput.value = '';
-    console.log('State reset.');
+    //for debugging
+    // console.log('State reset.');
   }
 });

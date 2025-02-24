@@ -47,10 +47,11 @@ body {
 }
 
 .hero-button {
+  font-weight: 500;
   text-decoration: none;
   color: black;
   border: 1px solid black;
-  font-size: 1rem;
+  font-size: 1.1rem;
   width: min(200px, 80%);
   display: flex;
   align-items: center;
