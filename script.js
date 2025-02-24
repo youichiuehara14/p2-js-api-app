@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const output = document.getElementById('output');
   const locationInput = document.getElementById('app-user-location');
   const imgContainer = document.getElementById('app-preview-wrapper');
+  const fileNameDisplay = document.getElementById('file-name-display');
 
   imgContainer.style.border = '1px solid black';
   fileInput.addEventListener('change', handleImageUpload);
@@ -71,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       preview.hidden = false;
       loadingPreview.hidden = true;
       imgContainer.style.border = 'none';
+      fileNameDisplay.textContent = file.name;
       //for debugging
       // console.log('Image uploaded and preview set.');
     };
