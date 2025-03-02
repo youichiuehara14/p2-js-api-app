@@ -20,6 +20,9 @@ module.exports.handler = async function (event, context) {
     const fetch = await import('node-fetch').then((mod) => mod.default);
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
+    //#2 ==Do Not Push==
+    // Problem: bug: image cannot be analyzed when there's no user input for the location
+    //  Fix : -- fixed ...(userLocation ? [{ text: userLocation }] : []
     const requestData = {
       contents: [
         {
@@ -44,6 +47,8 @@ module.exports.handler = async function (event, context) {
       ],
     };
 
+    // Problem/Bug: Console log is too long
+    // Fix: -- Refactored and removed some console logs
     // Sending a POST request to the Gemini AI API
     const response = await fetch(apiUrl, {
       method: 'POST',

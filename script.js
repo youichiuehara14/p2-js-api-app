@@ -65,7 +65,7 @@ function handleImageUpload(event) {
   reader.readAsDataURL(file);
 }
 
-// Function to analyze the image
+// Function to resize and process the selected image before sending it for analysis
 async function analyzeImage() {
   const fileInput = document.getElementById('app-upload-img');
   const locationInput = document.getElementById('app-user-location');
@@ -101,7 +101,7 @@ async function analyzeImage() {
   }
 }
 
-// Function to send the image data to the AI API
+// Function to send the processed image (Base64) and user input to the AI API for location analysis
 function sendToAI(base64Image, userLocation) {
   fetch('/.netlify/functions/analyze-image', {
     method: 'POST',
@@ -147,6 +147,8 @@ function toggleButtons() {
   resetBtn.hidden = false;
 }
 
+// Problem/bug : Image File Name doesn't reset after clicking the reset button
+// Fix : resets the string content of the file name display element
 function resetState() {
   const preview = document.getElementById('preview');
   const loadingPreview = document.getElementById('app-preview-loading');
