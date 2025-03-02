@@ -18,7 +18,7 @@ module.exports.handler = async function (event, context) {
     console.log('API Key is present, proceeding with request.');
 
     const fetch = await import('node-fetch').then((mod) => mod.default);
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001:generateContent?key=${apiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
     const requestData = {
       contents: [
@@ -38,7 +38,6 @@ module.exports.handler = async function (event, context) {
                       - Keep explanations concise (under 35 words) and avoid using "*".`,
             },
             ...(userLocation ? [{ text: userLocation }] : []),
-            ,
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
         },
