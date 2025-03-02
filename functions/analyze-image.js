@@ -44,7 +44,6 @@ module.exports.handler = async function (event, context) {
       ],
     };
 
-    console.log('Request Data:', JSON.stringify(requestData, null, 2));
     // Sending a POST request to the Gemini AI API
     const response = await fetch(apiUrl, {
       method: 'POST',
@@ -52,13 +51,8 @@ module.exports.handler = async function (event, context) {
       body: JSON.stringify(requestData),
     });
 
-    // Below are logged responses for Netlify function logs
-    console.log('Response status:', response.status);
-
     if (!response.ok) {
-      console.error('API request failed:', response.statusText);
       const errorText = await response.text();
-      console.error('Error details:', errorText);
       return {
         statusCode: response.status,
         body: JSON.stringify({ error: response.statusText, details: errorText }),
@@ -66,17 +60,13 @@ module.exports.handler = async function (event, context) {
     }
 
     const data = await response.json();
-    console.log('Full Response Data:', JSON.stringify(data, null, 2));
-
     const locationText = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Location not found.';
-    console.log('Extracted Location Text:', locationText);
 
     return {
       statusCode: 200,
       body: JSON.stringify({ location: locationText }),
     };
   } catch (error) {
-    console.error('Error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'Error analyzing the image.', details: error.message }),
