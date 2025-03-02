@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Function to send the image data to the AI API
   function sendToAI(base64Image, userLocation) {
     fetch('/.netlify/functions/analyze-image', {
       method: 'POST',
@@ -116,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        //for debugging
+        // Debugging log
         // console.log('AI Full Response:', JSON.stringify(data, null, 2));
         const resultText = data.location || 'Location not found.';
         updateOutput(`📍 Location: ${resultText}`);
@@ -155,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInputLabel.style.display = 'flex';
     resetBtn.hidden = true;
     fileInput.value = '';
-    //for debugging
-    // console.log('State reset.');
+    // Debugging log for state reset
+    // console.log('State has been reset.');
   }
 });

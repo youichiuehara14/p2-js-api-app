@@ -6,6 +6,7 @@ module.exports.handler = async function (event, context) {
     console.log('Parsed input:', { base64Image, userLocation });
 
     const apiKey = process.env.GEMINI_API_KEY;
+    // Logs API key status for Netlify function logs
     if (!apiKey) {
       console.error('API key is missing');
       return {
@@ -17,7 +18,7 @@ module.exports.handler = async function (event, context) {
     console.log('API Key is present, proceeding with request.');
 
     const fetch = await import('node-fetch').then((mod) => mod.default);
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001:generateContent?key=${apiKey}`;
 
     const requestData = {
       contents: [
@@ -30,9 +31,9 @@ module.exports.handler = async function (event, context) {
                       - If the image depicts a real-world location, always provide the most specific place possible (e.g., building name, street, landmark, or city) and include an accuracy percentage (e.g., "Accuracy: 0% - 100%") if the location is confidently identifiable.
                       - Display the determined location first, followed by the explanation.
                       - Compare the determined location with the user's suggested location:
-                        - If the suggestion matches the result, confirm it.
-                        - If the suggestion is incorrect but helped guide the result, acknowledge it in a separate sentence, but do not include it within the final location details.
-                        - If the location is unclear, **use the user's suggestion to refine the analysis and attempt to validate it against the image details before dismissing it.** 
+                      - If the suggestion matches the result, confirm it.
+                      - If the suggestion is incorrect but helped guide the result, acknowledge it in a separate sentence, but do not include it within the final location details.
+                      - If the location is unclear, **use the user's suggestion to refine the analysis and attempt to validate it against the image details before dismissing it.** 
                       - Always note uncertainty or the need for further clarification.
                       - Keep explanations concise (under 35 words) and avoid using "*".`,
             },
@@ -44,13 +45,14 @@ module.exports.handler = async function (event, context) {
     };
 
     console.log('Request Data:', JSON.stringify(requestData, null, 2));
-
+    // Sending a POST request to the Gemini AI API
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestData),
     });
 
+    // Below are logged responses for Netlify function logs
     console.log('Response status:', response.status);
 
     if (!response.ok) {
