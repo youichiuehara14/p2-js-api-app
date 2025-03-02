@@ -37,7 +37,8 @@ module.exports.handler = async function (event, context) {
                       - Always note uncertainty or the need for further clarification.
                       - Keep explanations concise (under 35 words) and avoid using "*".`,
             },
-            { text: userLocation },
+            ...(userLocation ? [{ text: userLocation }] : []),
+            ,
             { inlineData: { mimeType: 'image/jpeg', data: base64Image } },
           ],
         },
