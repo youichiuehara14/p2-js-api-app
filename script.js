@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInputLabel.style.display = 'flex';
     resetBtn.hidden = true;
     fileInput.value = '';
-    filenamedisplay.textContent = '';
+    fileNameDisplay.textContent = '';
     // Debugging log for state reset
     // console.log('State has been reset.');
   }
