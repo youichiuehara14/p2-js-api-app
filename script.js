@@ -71,6 +71,7 @@ function onDOMContentLoaded() {
 
     const reader = new FileReader();
     reader.onload = (e) => {
+      output.textContent = 'Enter your image possible location';
       preview.src = e.target.result;
       preview.hidden = false;
       loadingPreview.hidden = true;
