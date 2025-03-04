@@ -154,4 +154,4 @@ function onDOMContentLoaded() {
 }
 
 // Run the function when the DOM is loaded
-document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
+onDOMContentLoaded();
