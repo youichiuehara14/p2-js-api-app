@@ -1,2 +1,5 @@
-# Local Netlify folder
-.netlify
+# Local Netlify cache (safe to ignore)
+.netlify/
+
+# Node.js
+node_modules/
