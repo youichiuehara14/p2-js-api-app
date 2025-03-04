@@ -6,7 +6,7 @@ module.exports.handler = async function (event, context) {
     console.log('Parsed input:', { base64Image, userLocation });
 
     const apiKey = process.env.GEMINI_API_KEY;
-    // Logs API key status for Netlify function logs
+
     if (!apiKey) {
       console.error('API key is missing');
       return {
@@ -18,11 +18,9 @@ module.exports.handler = async function (event, context) {
     console.log('API Key is present, proceeding with request.');
 
     const fetch = await import('node-fetch').then((mod) => mod.default);
+
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
-    //#2 ==Do Not Push==
-    // Problem: bug: image cannot be analyzed when there's no user input for the location
-    //  Fix : -- fixed ...(userLocation ? [{ text: userLocation }] : []
     const requestData = {
       contents: [
         {
@@ -47,9 +45,6 @@ module.exports.handler = async function (event, context) {
       ],
     };
 
-    // Problem/Bug: Console log is too long
-    // Fix: -- Refactored and removed some console logs
-    // Sending a POST request to the Gemini AI API
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -65,6 +60,7 @@ module.exports.handler = async function (event, context) {
     }
 
     const data = await response.json();
+
     const locationText = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Location not found.';
 
     return {
