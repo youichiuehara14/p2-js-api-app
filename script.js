@@ -1,4 +1,3 @@
-// Function to handle image resizing and converting to Base64
 function resizeAndConvertToBase64(file, maxWidth = 2000, maxHeight = 2000) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -42,8 +41,7 @@ function resizeAndConvertToBase64(file, maxWidth = 2000, maxHeight = 2000) {
   });
 }
 
-// Function to handle when the DOM is fully loaded
-function onDOMContentLoaded() {
+function loadApp() {
   const fileInput = document.getElementById('app-upload-img');
   const fileInputLabel = document.getElementById('app-upload-btn');
   const preview = document.getElementById('preview');
@@ -64,14 +62,12 @@ function onDOMContentLoaded() {
     img.addEventListener('contextmenu', (event) => event.preventDefault());
   });
 
-  // Event Handlers
   function handleImageUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      output.textContent = 'Enter your image possible location';
       preview.src = e.target.result;
       preview.hidden = false;
       loadingPreview.hidden = true;
@@ -152,6 +148,4 @@ function onDOMContentLoaded() {
     fileNameDisplay.textContent = '';
   }
 }
-
-// Run the function when the DOM is loaded
-onDOMContentLoaded();
+loadApp();
